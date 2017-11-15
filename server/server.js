@@ -18,6 +18,16 @@ app.use(express.static(publicPath));  // serve stuff in public folder
 io.on('connection', (socket) => {
   console.log('New user connected');
 
+  socket.emit('newMessage', {
+    from: `Haaris Chaudhry`,
+    text: `What's up?`,
+    createdAt: new Date()
+  });
+
+  socket.on('createMessage', (message) => {
+    console.log(`got "createMessage" from client: `, message);
+  });
+
   socket.on('disconnect', () => {
     console.log('Lost a client');
   })
