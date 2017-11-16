@@ -20,7 +20,7 @@ describe('generate location message', () => {
     let from = 'Haaris Chaudhry';
     let latitude = -23.234321964;
     let longitude = 98.43312312;
-    let url = `https://www.google.com/maps?=${latitude},${longitude}`;
+    let url = `https://www.google.com/maps?q=${latitude},${longitude}`;
     let testLocMsg = generateLocationMessage(from, latitude, longitude);
 
     expect(testLocMsg).toInclude({from, url});
