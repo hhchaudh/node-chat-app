@@ -5,7 +5,7 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 
-const {generateMessage} = require('./utils/message.js');
+const {generateMessage, generateLocationMessage} = require('./utils/message.js');
 
 const publicPath = path.join(__dirname, '../public');
 
@@ -27,11 +27,10 @@ io.on('connection', (socket) => {
     console.log(`got "createMessage" from client: `, message);
     io.emit('newMessage', generateMessage(message.from, message.text)); //emit to every single connection
     callback('This is an ack from the server');
-    // socket.broadcast.emit('newMessage', {
-    //   from: message.from,
-    //   text: message.text,
-    //   createdAt: new Date().getTime()
-    // }); //fire to everybody but socket
+  });
+
+  socket.on('createLocationMessage', (coords) => {
+    io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude));
   });
 
   socket.on('disconnect', () => {
