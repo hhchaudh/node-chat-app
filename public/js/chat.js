@@ -79,7 +79,6 @@ $('#message-form').on('submit', function (e) {
   let messageTextbox = $('[name=message]');
 
   socket.emit('createMessage', {
-    from: 'User',
     text: messageTextbox.val()
   }, function () {
     messageTextbox.val('');
@@ -101,7 +100,7 @@ locationButton.on('click', function () {
     socket.emit('createLocationMessage', {
       latitude: position.coords.latitude,
       longitude: position.coords.longitude
-    })
+    });
   }, function () {
     locationButton.removeAttr('disabled').text('Send Location');  //error handling, not after emit callback
   });
