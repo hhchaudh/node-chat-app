@@ -7,6 +7,7 @@ const socketIO = require('socket.io');
 
 const {generateMessage, generateLocationMessage} = require('./utils/message.js');
 const {isRealString} = require('./utils/validation');
+const {disconnection} = require('./utils/disconnect');
 const {Users} = require('./utils/users');
 
 const publicPath = path.join(__dirname, '../public');
@@ -54,14 +55,7 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('disconnect', () => {
-    console.log('Lost a client');
-    let user = users.removeUser(socket.id);
-    if (user) {
-      io.to(user.room).emit('updateUserList', users.getUserList(user.room));
-      io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left the room`));
-    }
-  });
+  disconnection(users, socket, io);
 });
 
 server.listen(port, () => {
